@@ -1,223 +1,71 @@
-This project demonstrates a web scraping automation workflow using Python and Playwright
-to extract product information from Jumia, a dynamic e-commerce website.
-Unlike traditional static HTML scraping approaches, this project uses browser automation to interact with a live website
-where content is dynamically loaded through JavaScript.
-The scraper automates a real browser session, navigates through product search pages, extracts structured product information, 
-handles pagination, cleans the collected data, and exports the final dataset into an organized Excel report.
-This project was built to simulate a practical automation task that could be requested by a business needing product monitoring,
-market research, competitor analysis, or price tracking.
+Jumia Product Scraper & Excel Report Automation
 
-Objectives
-The goal of this project is to build a reusable E-commerce scraping automation tool capable of:
-Automating browser interactions using Playwright
-Scraping dynamically rendered web content
-Extracting product details from search result pages
-Handling multiple pages of results
-Cleaning and structuring scraped data
-Removing duplicate records
-Exporting results into a professional Excel report
-Generating summary statistics from collected data
+Overview
+This project is a Python automation tool that scrapes product listings from Jumia Nigeria
+using Playwright, performs data cleaning and analysis with pandas, and generates a professionally formatted multi-sheet Excel report using openpyxl.
+Unlike static web scraping projects, this scraper interacts with a real-world e-commerce website, handling dynamic content, pagination, and browser automation before transforming the collected data into meaningful business insights.
 
-Programming Language Used
+Features
+Searches Jumia for a specified product.
+Automates browser interaction with Playwright.
+Handles cookie consent automatically.
+Scrapes multiple pages of search results.
+
+Extracts:
+Product Name
+Promo Price
+Old Price
+Discount
+Rating
+Number of Reviews
+Sponsored Status
+Product URL
+Cleans and converts scraped data into appropriate data types. Removes duplicate products using the Product URL.
+Performs statistical analysis using pandas. Exports a formatted Excel workbook containing multiple reports.
+
+Technologies Used
 Python
-
-Libraries and Tools
-
 Playwright
-Used for browser automation and interacting with dynamically generated web pages.
-Features used:
-Launching browser sessions
-Navigating web pages
-Waiting for dynamic elements
-Locating page elements
-Extracting rendered content
-Handling pagination
-
-
 Pandas
-Used for:
-Data cleaning
-Data transformation
-Duplicate removal
-Data analysis
-Generating summary statistics
-
-OpenPyXL
-Used for:
-Creating Excel workbooks
-Formatting spreadsheets
-Adjusting column widths
-Applying styles to reports
-
-Pathlib
-Used for:
-Managing project directories
-Handling input and output file paths
+openpyxl
+Regular Expressions (re)
+JSON
 
 Project Structure
-Jumia-Product-Scraper/
-main.py
-scraper/
-browser.py
-scraper.py
-analysis/
-analysis.py
-reports/
-excel_report.py│
-data/
-scraped_products.json
-output/
-jumia_products_report.xlsx
-requirements.txt
+Jumia-Product-Scraper-Automation-With-Playwright
+Data
+  scraped_products.json  #saved here for analysis purpose
+Output
+  jumia_products_report.xlsx #All scraped details from Jumia
+Screenshots:
+    Contains sample output pictures of the products scraped excel files.
+analysis.py      # Data cleaning and analysis
+exporter.py      # Excel report generation
+helpers.py       # Helper and extraction functions
+main.py          # Application entry point
 README.md
-
-How It Works
-1. Browser Automation
-The scraper launches a Chromium browser using Playwright.
-Instead of sending direct HTTP requests, the program behaves like a real user:
-Opens Jumia
-Searches for products
-Waits for JavaScript generated content
-Reads the rendered page
-This approach allows the scraper to work with modern websites where product information is not available in the initial HTML response.
-
-2. Product Search
-The scraper accepts a search query and navigates to the corresponding Jumia search results page.
-Example:
-Laptop
-The scraper collects products matching the search term.
-3. Data Extraction
-For each product, the scraper extracts information such as:
-Product name, product price, product rating, number of reviews, product URL , seller information (if available)
-product availability, search category
-
-4. Example output:
-Product name         Price          Rating      Reviews     URL     
-HP Laptop 15     ₦350,000      4.5           120       product_url
-
-   
-5. Pagination Handling
-The scraper automatically moves through multiple result pages.
-The workflow:
-Scrape current page
-Extract product information
-Check for next page
-Navigate to next page
-Repeat until target page limit is reached
-6. Data Cleaning
-Before exporting the final report, the collected data is processed.
-Cleaning operations include:
-Removing duplicate products
-Cleaning price formatting
-Converting prices into numeric values
-Handling missing values
-Standardizing column names
-7. Data Analysis
-The project generates useful insights from the scraped products.
-Examples:
-Total products collected
-Average product price
-Highest priced product
-Lowest priced product
-Average rating
-Number of products by category
-8. Excel Report Generation
-The final output is exported into a formatted Excel workbook.
-The workbook contains multiple sheets:
-Products Sheet
-Contains all scraped product information.
-
-Example columns:
-Product Name, price, rating, reviews, seller, product URL
-
-Summary Sheet
-Contains overall statistics:
-Example:
-Total Products: 250,   Average Price: ₦120,500,   Highest Price: ₦850,000 , Average Rating: 4.2
-
-Category Analysis Sheet
-Contains grouped analysis such as:
-Products per category, Average price per category, Rating distribution,
-
-Installation
-Clone Repository
-git clone repository_url
-Navigate into the project:
-cd Jumia-Product-Scraper
-Create Virtual Environment
-python -m venv .venv
-Activate environment:
-Windows:
-.venv\Scripts\activate
-Linux/Mac:
-source .venv/bin/activate
-Install Dependencies
-pip install -r requirements.txt
-Install Playwright browsers:
-playwright install
-
-Running The Project
-Run:
-python main.py
-The scraper will:
-Launch the browser
-Search Jumia products
-Extract product information
-Clean the data
-Generate an Excel report
-The final report will be saved inside:
-output/
-
-Example Use Cases
-This automation can be adapted for:
-Price Monitoring
-Track product price changes over time.
-Example:
-Electronics prices
-Laptop prices
-Smartphone prices
-Market Research
-Collect product information to analyze:
-Competitor pricing
-Product popularity
-Market trends
-Inventory Research
-Businesses can collect information about:
-Available products
-Sellers
-Product categories
+scraper.py       # Browser automation and scraping
 
 
-Challenges Encountered
-Dynamic Websites
-Modern websites load content through JavaScript, meaning traditional scraping methods may not capture the required information.
+Excel Report
+The generated workbook contains five worksheets:
 
-Solution:
-Used Playwright browser automation to interact with the rendered page.
-Changing Website Structure
-E-commerce websites frequently change their HTML structure.
+Products Info: Complete list of scraped products sorted by price.
+Summary Statistics: Key metrics such as average price, discounts, ratings, and duplicate count.
+Product Insights: Details of notable products, including the most expensive, cheapest, most reviewed, and highest discount items.
+Brand Analysis: Product frequency grouped by detected brand.
+Price Range Distribution: Distribution of products across predefined price ranges.
 
-Solution:
-Created reusable selectors and separated scraping logic from reporting logic.
-
-Data Cleaning
-Raw scraped data often contains:
-Currency symbols
-Missing values
-Duplicate products
-
-Solution:
-Used pandas to clean and transform collected data.
+Limitations
+Brand detection is based on the first word of the product name and may not always represent the actual manufacturer.
+Search results depend on Jumia's search algorithm and may include related products in addition to the requested item.
+Changes to Jumia's website structure may require updates to the scraper selectors.
 
 Future Improvements
-Possible improvements include:
-Add scheduled scraping
-Store historical price data
-Create price comparison dashboards
-Add database storage
-Implement automatic email reports
-Add support for multiple e-commerce websites
-Deploy scraper as a web service
+Accept the search term from the command line instead of editing the source code.
+Add logging for better monitoring and debugging.
+Support exporting charts and visual summaries.
+Allow scraping multiple search terms in a single run.
 
 DISCLAIMER
 This project is created for educational purposes.
